@@ -14,4 +14,14 @@ SELECT continent, name, area FROM world x
     (SELECT area FROM world y
         WHERE y.continent=x.continent
           AND area>0)
+          
+          
+The above example is known as a correlated or synchronized sub-query.
+Using correlated subqueries
+
+A correlated subquery works like a nested loop: the subquery only has access to rows related to a single record at a time in the outer query. The technique relies on table aliases to identify two different uses of the same table, one in the outer query and the other in the subquery.
+
+One way to interpret the line in the WHERE clause that references the two table is “… where the correlated values are the same”.
+
+In the example provided, you would say “select the country details from world where the population is greater than or equal to the population of all countries where the continent is the same”.
 
