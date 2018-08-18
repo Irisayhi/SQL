@@ -1,0 +1,13 @@
+https://community.modeanalytics.com/sql/tutorial/sql-case/
+
+Write a query that displays the number of players in each state, with FR, SO, JR, and SR players in separate columns and another column for the total number of players. Order results such that states with the most players come first.
+
+select distinct state,
+      count(case WHEN year = 'FR' THEN 1 else null end ) as FR_Count,
+      count(case WHEN year = 'SO' THEN 1 else null end) as SO_Count, 
+      count(case WHEN year = 'JR' THEN 1 else null end) as JR_Count, 
+      count(case WHEN year = 'SR' THEN 1 else null end) as SR_Count, 
+      count(*) 
+FROM benn.college_football_players
+group by state
+order by count desc
