@@ -26,3 +26,9 @@ SELECT CASE WHEN investments.investor_name IS NULL THEN 'No Investors'
     ON companies.permalink = investments.company_permalink
  GROUP BY investor
  ORDER BY companies_invested_in DESC
+
+
+
+
+
+
