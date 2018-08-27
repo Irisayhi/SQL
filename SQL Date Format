@@ -1,0 +1,52 @@
+
+
+
+SELECT companies.category_code,
+       COUNT(CASE WHEN acquisitions.acquired_at_cleaned <= companies.founded_at_clean::timestamp + INTERVAL '3 years'
+                       THEN 1 ELSE NULL END) AS acquired_3_yrs,
+       COUNT(CASE WHEN acquisitions.acquired_at_cleaned <= companies.founded_at_clean::timestamp + INTERVAL '5 years'
+                       THEN 1 ELSE NULL END) AS acquired_5_yrs,
+       COUNT(CASE WHEN acquisitions.acquired_at_cleaned <= companies.founded_at_clean::timestamp + INTERVAL '10 years'
+                       THEN 1 ELSE NULL END) AS acquired_10_yrs,
+       COUNT(1) AS total
+  FROM tutorial.crunchbase_companies_clean_date companies
+  JOIN tutorial.crunchbase_acquisitions_clean_date acquisitions
+    ON acquisitions.company_permalink = companies.permalink
+ WHERE founded_at_clean IS NOT NULL
+ GROUP BY companies.category_code
+ ORDER BY toal DESC
+
+
+select companies.category_code, count(case when 
+acquisitions.acquired_at_cleaned <= companies.founded_at_clean::timestamp + interval '10 years' then 1 else null end )as ten_year, 
+count(case when 
+acquisitions.acquired_at_cleaned <= companies.founded_at_clean::timestamp + interval '5 years' then 1 else null end )as five_year,
+count(case when 
+acquisitions.acquired_at_cleaned <= companies.founded_at_clean::timestamp + interval '3 years' then 1 else null end) as three_year,
+count(*) as total
+
+from tutorial.crunchbase_companies_clean_date companies
+join tutorial.crunchbase_acquisitions_clean_date acquisitions
+on acquisitions.company_permalink = companies.permalink
+where companies.founded_at_clean is not null
+group by companies.category_code 
+order by total desc
+
+
+
+select companies.category_code, count(case when 
+acquisitions.acquired_at_cleaned - companies.founded_at_clean::timestamp <= interval '10 years' then 1 else null end )as ten_year, 
+count(case when 
+acquisitions.acquired_at_cleaned - companies.founded_at_clean::timestamp <= interval '5 years' then 1 else null end )as five_year,
+count(case when 
+acquisitions.acquired_at_cleaned - companies.founded_at_clean::timestamp <= interval '3 years' then 1 else null end) as three_year,
+count(*) as total
+
+from tutorial.crunchbase_companies_clean_date companies
+join tutorial.crunchbase_acquisitions_clean_date acquisitions
+on acquisitions.company_permalink = companies.permalink
+where companies.founded_at_clean is not null
+group by companies.category_code 
+order by total desc
+
+
