@@ -1,0 +1,13 @@
+
+https://community.modeanalytics.com/sql/tutorial/sql-string-functions-for-cleaning/
+
+Write a query that separates the `location` field into separate fields for latitude and longitude. 
+You can compare your results against the actual `lat` and `lon` fields in the table.
+
+
+SELECT location,
+       trim(leading'()' from left(location, strpos(location, ',')-1 )) as latitude,
+       trim(trailing '()' from right(location, strpos(location, ',')-1 )) as longitude
+FROM tutorial.sf_crime_incidents_2014_01
+  
+  
