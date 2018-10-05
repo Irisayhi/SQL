@@ -1,0 +1,49 @@
+Exercises
+
+1. 
+use ap;
+select invoices.vendor_id, sum(invoice_total) from invoices
+join vendors on invoices.vendor_id = vendors.vendor_id 
+group by vendor_id
+
+2. 
+use ap;
+select vendors.vendor_name, sum(payment_total) as payment_total_sum from vendors
+join invoices on invoices.vendor_id = vendors.vendor_id
+group by vendor_name
+order by sum(payment_total) desc
+
+3.
+use ap;
+select vendors.vendor_name, count(*), sum(invoice_total)
+from vendors join invoices 
+on vendors.vendor_id = invoices.vendor_id
+group by vendor_name
+order by count(*) desc
+
+4.
+use ap;
+select account_description, count(*), sum(invoice_line_items.line_item_amount) as sum_amount from general_ledger_accounts
+join invoice_line_items on general_ledger_accounts.account_number = invoice_line_items.account_number
+group by account_description
+having count(*) > 1
+order by sum(invoice_line_items.line_item_amount) desc
+
+5.
+use ap;
+SELECT account_description, COUNT(*), SUM(invoice_line_items.line_item_amount) AS sum_amount
+FROM
+    general_ledger_accounts
+        JOIN
+    invoice_line_items ON 
+    general_ledger_accounts.account_number = invoice_line_items.account_number
+   right  join invoices on
+   invoice_due_date
+WHERE
+    invoices.invoice_due_date > = '2014-04-01'
+        AND invoices.invoice_due_date <= '2014-06-30'
+GROUP BY account_description
+HAVING COUNT(*) > 1
+ORDER BY SUM(invoice_line_items.line_item_amount) DESC
+
+6.
