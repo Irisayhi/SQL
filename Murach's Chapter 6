@@ -1,3 +1,5 @@
+# Chapter 6 How to code summary queries
+
 Exercises
 
 1. 
@@ -37,13 +39,13 @@ FROM
         JOIN
     invoice_line_items ON 
     general_ledger_accounts.account_number = invoice_line_items.account_number
-   right  join invoices on
-   invoice_due_date
+     join invoices on
+    invoices.invoice_id = invoice_line_items.invoice_id
 WHERE
-    invoices.invoice_due_date > = '2014-04-01'
-        AND invoices.invoice_due_date <= '2014-06-30'
+    invoices.invoice_date between '2014-04-01' and '2014-06-30'
 GROUP BY account_description
 HAVING COUNT(*) > 1
 ORDER BY SUM(invoice_line_items.line_item_amount) DESC
 
 6.
+
