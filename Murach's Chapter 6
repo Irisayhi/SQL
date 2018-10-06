@@ -48,4 +48,26 @@ HAVING COUNT(*) > 1
 ORDER BY SUM(invoice_line_items.line_item_amount) DESC
 
 6.
+use ap;
+select ili.account_number, 
+sum(ili.line_item_amount)
+from invoice_line_items ili
+join  general_ledger_accounts gla
+on gla.account_number = ili.account_number 
+group by ili.account_number with rollup
 
+7.
+use ap;
+SELECT 
+    vendors.vendor_name,
+    COUNT(DISTINCT gla.account_number) AS number_of_account
+FROM
+    vendors
+        JOIN
+    invoices ON vendors.vendor_id = invoices.vendor_id
+        JOIN
+    invoice_line_items ili ON ili.invoice_id = invoices.invoice_id
+        JOIN
+    general_ledger_accounts gla ON gla.account_number = ili.account_number
+GROUP BY vendor_name
+HAVING number_of_account > 1
