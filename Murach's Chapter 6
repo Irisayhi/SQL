@@ -71,3 +71,113 @@ FROM
     general_ledger_accounts gla ON gla.account_number = ili.account_number
 GROUP BY vendor_name
 HAVING number_of_account > 1
+
+# My Guitar Shop Exercises
+
+1. 
+
+use my_guitar_shop;
+SELECT 
+    COUNT(*) AS number_of_orders,
+    SUM(tax_amount) AS sum_tax_amount
+FROM
+    orders
+ORDER BY sum_tax_amount
+
+2. 
+
+use my_guitar_shop;
+SELECT 
+    categories.category_name,
+    COUNT(*) AS count_of_product,
+    MAX(list_price) AS highest_price
+FROM
+    products
+        JOIN
+    categories ON products.category_id = categories.category_id
+GROUP BY categories.category_name
+ORDER BY count_of_product DESC
+
+3. 
+
+use my_guitar_shop;
+SELECT 
+    customers.email_address,
+    SUM(item_price * quantity) AS total_revenue,
+    SUM(discount_amount * quantity) AS discount_amount
+FROM
+    order_items
+        JOIN
+    orders ON orders.order_id = order_items.order_id
+        JOIN
+    customers ON customers.customer_id = orders.customer_id
+GROUP BY email_address
+ORDER BY total_revenue DESC
+
+4. 
+
+use my_guitar_shop;
+SELECT 
+    customers.email_address,
+    COUNT(*) AS number_of_orders,
+    SUM((item_price - discount_amount) * quantity) AS total_amount
+FROM
+    customers
+        JOIN
+    orders ON customers.customer_id = orders.customer_id
+        JOIN
+    order_items ON order_items.order_id = orders.order_id
+GROUP BY email_address
+HAVING number_of_orders > 1
+ORDER BY total_amount DESC
+
+5. 
+
+use my_guitar_shop;
+SELECT 
+    customers.email_address,
+    COUNT(*) AS number_of_orders,
+    SUM((item_price - discount_amount) * quantity) AS total_amount
+FROM
+    customers
+        JOIN
+    orders ON customers.customer_id = orders.customer_id
+        JOIN
+    order_items ON order_items.order_id = orders.order_id
+WHERE order_items.item_price > 400
+GROUP BY email_address
+HAVING number_of_orders > 1
+ORDER BY total_amount DESC
+
+
+6. 
+
+use my_guitar_shop;
+
+SELECT 
+    products.product_name,
+    SUM((order_items.item_price - order_items.discount_amount) * order_items.quantity) AS total_amount
+FROM
+    products
+        JOIN
+    order_items ON products.product_id = order_items.product_id
+GROUP BY products.product_name WITH ROLLUP
+ORDER BY total_amount
+
+7.
+
+use my_guitar_shop;
+
+SELECT 
+    customers.email_address,
+    COUNT(DISTINCT product_id) AS count_of_distinct_products
+FROM
+    customers
+        JOIN
+    orders ON customers.customer_id = orders.customer_id
+        JOIN
+    order_items ON orders.order_id = order_items.order_id
+GROUP BY customers.email_address
+HAVING count_of_distinct_products > 1
+ORDER BY email_address
+
