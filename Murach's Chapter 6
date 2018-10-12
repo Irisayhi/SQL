@@ -119,7 +119,7 @@ ORDER BY total_revenue DESC
 use my_guitar_shop;
 SELECT 
     customers.email_address,
-    COUNT(*) AS number_of_orders,
+    COUNT(DISTINCT orders.order_id) AS number_of_orders,
     SUM((item_price - discount_amount) * quantity) AS total_amount
 FROM
     customers
@@ -136,7 +136,7 @@ ORDER BY total_amount DESC
 use my_guitar_shop;
 SELECT 
     customers.email_address,
-    COUNT(*) AS number_of_orders,
+    COUNT(DISTINCT orders.order_id) AS number_of_orders,
     SUM((item_price - discount_amount) * quantity) AS total_amount
 FROM
     customers
