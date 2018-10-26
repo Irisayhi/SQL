@@ -1,1 +1,10 @@
+1. 
+use ap;
+select round(invoice_total, 1), round(invoice_total, 0)
+from invoices;
 
+2.
+use ex;
+select start_date, date_format(start_date, '%b-%d-%y'),
+date_format(start_date,'%c-%e-%y'),
+date_format(start_date,'%'),
